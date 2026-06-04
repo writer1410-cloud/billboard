@@ -1,0 +1,54 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { z } from 'zod';
+
+const itemSchema = z.object({
+  description: z.string().min(1),
+  quantity: z.number().positive(),
+  unitPrice: z.number().min(0),
+  amount: z.number().min(0),
+});
+
+const schema = z.object({
+  invoiceNumber: z.string().min(1),
+  clientId: z.string().min(1),
+  title: z.string().min(1),
+  items: z.array(itemSchema).min(1),
+  subtotal: z.number(),
+  taxRate: z.number(),
+  tax: z.number(),
+  total: z.number(),
+  issueDate: z.string(),
+  dueDate: z.string(),
+  notes: z.string().optional(),
+  quoteId: z.string().optional(),
+});
+
+export async function GET() {
+  const invoices = await prisma.invoice.findMany({
+    orderBy: { createdAt: 'desc' },
+    include: { client: true },
+  });
+  return NextResponse.json(invoices);
+}
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) return NextResponse.json({ error: '入力内容が不正です' }, { status: 400 });
+
+  const { items, quoteId, ...data } = parsed.data;
+  const invoice = await prisma.invoice.create({
+    data: {
+      ...data,
+      issueDate: new Date(data.issueDate),
+      dueDate: new Date(data.dueDate),
+      quoteId: quoteId || undefined,
+      items: {
+        create: items.map((item, i) => ({ ...item, sortOrder: i })),
+      },
+    },
+    include: { items: true },
+  });
+  return NextResponse.json(invoice, { status: 201 });
+}
