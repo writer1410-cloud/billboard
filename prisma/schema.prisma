@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  address   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  quotes    Quote[]
+  invoices  Invoice[]
+}
+
+model Quote {
+  id          String      @id @default(cuid())
+  quoteNumber String      @unique
+  clientId    String
+  client      Client      @relation(fields: [clientId], references: [id])
+  title       String
+  items       QuoteItem[]
+  subtotal    Float
+  taxRate     Float       @default(0.1)
+  tax         Float
+  total       Float
+  validUntil  DateTime
+  notes       String?
+  status      String      @default("DRAFT")
+  sentAt      DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  invoice     Invoice?
+}
+
+model QuoteItem {
+  id          String @id @default(cuid())
+  quoteId     String
+  quote       Quote  @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Float
+  unitPrice   Float
+  amount      Float
+  sortOrder   Int    @default(0)
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  clientId      String
+  client        Client        @relation(fields: [clientId], references: [id])
+  quoteId       String?       @unique
+  quote         Quote?        @relation(fields: [quoteId], references: [id])
+  title         String
+  items         InvoiceItem[]
+  subtotal      Float
+  taxRate       Float         @default(0.1)
+  tax           Float
+  total         Float
+  issueDate     DateTime      @default(now())
+  dueDate       DateTime
+  notes         String?
+  status        String        @default("UNPAID")
+  paidAt        DateTime?
+  sentAt        DateTime?
+  reminders     Reminder[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Float
+  unitPrice   Float
+  amount      Float
+  sortOrder   Int     @default(0)
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  sentAt    DateTime @default(now())
+  type      String   @default("OVERDUE")
+}
