@@ -105,13 +105,13 @@ export default async function Dashboard() {
   return (
     <div>
       {/* ─── Hero section ─── */}
-      <div className="-mx-4 md:-mx-8 -mt-6 bg-emerald-600 text-white mb-6">
+      <div className="-mx-4 md:-mx-8 -mt-6 bg-cyan-600 text-white mb-6">
         <div className="px-5 md:px-8 pt-6 pb-6">
 
           {/* Title + date */}
           <div className="mb-5">
             <h1 className="text-xl font-bold">ダッシュボード</h1>
-            <p className="text-emerald-200 text-sm mt-0.5">{dateStr}</p>
+            <p className="text-white/75 text-sm mt-0.5">{dateStr}</p>
           </div>
 
           {/* Stats */}
@@ -119,7 +119,7 @@ export default async function Dashboard() {
             {stats.map((stat) => (
               <div key={stat.label} className="bg-white/10 rounded-sm px-4 py-3">
                 <p className="text-lg font-bold leading-tight">{stat.value}</p>
-                <p className="text-xs text-emerald-200 mt-0.5">{stat.label}</p>
+                <p className="text-xs text-white/75 mt-0.5">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -130,7 +130,7 @@ export default async function Dashboard() {
               <Link
                 key={action.href}
                 href={action.href}
-                className="bg-emerald-700 hover:bg-emerald-800 rounded-sm px-3 py-3 flex flex-col items-center gap-2 transition-colors text-center"
+                className="bg-cyan-700 hover:bg-cyan-800 rounded-sm px-3 py-3 flex flex-col items-center gap-2 transition-colors text-center"
               >
                 <action.Icon />
                 <span className="text-xs font-medium leading-tight">{action.label}</span>
@@ -146,7 +146,7 @@ export default async function Dashboard() {
         <div className="bg-white rounded-sm border border-gray-200">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <h2 className="font-semibold text-sm text-gray-900">最近の見積書</h2>
-            <Link href="/quotes" className="text-xs text-emerald-600 hover:text-emerald-700 font-medium">
+            <Link href="/quotes" className="text-xs text-cyan-600 hover:text-cyan-700 font-medium">
               すべて表示 →
             </Link>
           </div>
@@ -155,7 +155,7 @@ export default async function Dashboard() {
               <Link
                 key={q.id}
                 href={`/quotes/${q.id}`}
-                className="flex items-center justify-between px-4 py-3 hover:bg-emerald-50/40 transition-colors"
+                className="flex items-center justify-between px-4 py-3 hover:bg-cyan-50/40 transition-colors"
               >
                 <div className="min-w-0 pr-3">
                   <p className="font-medium text-sm text-gray-900 truncate">{q.quoteNumber}</p>
@@ -179,7 +179,7 @@ export default async function Dashboard() {
         <div className="bg-white rounded-sm border border-gray-200">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <h2 className="font-semibold text-sm text-gray-900">最近の請求書</h2>
-            <Link href="/invoices" className="text-xs text-emerald-600 hover:text-emerald-700 font-medium">
+            <Link href="/invoices" className="text-xs text-cyan-600 hover:text-cyan-700 font-medium">
               すべて表示 →
             </Link>
           </div>
@@ -188,7 +188,7 @@ export default async function Dashboard() {
               <Link
                 key={inv.id}
                 href={`/invoices/${inv.id}`}
-                className="flex items-center justify-between px-4 py-3 hover:bg-emerald-50/40 transition-colors"
+                className="flex items-center justify-between px-4 py-3 hover:bg-cyan-50/40 transition-colors"
               >
                 <div className="min-w-0 pr-3">
                   <p className="font-medium text-sm text-gray-900 truncate">{inv.invoiceNumber}</p>

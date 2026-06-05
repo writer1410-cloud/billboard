@@ -27,12 +27,12 @@ export default async function InvoicesPage({
     <div>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-6 bg-emerald-600 rounded-none shrink-0" />
+          <div className="w-1 h-6 bg-cyan-600 rounded-none shrink-0" />
           <h1 className="text-xl font-bold text-gray-900">請求書</h1>
         </div>
         <Link
           href="/invoices/new"
-          className="bg-emerald-600 text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-emerald-700 transition-colors"
+          className="bg-cyan-600 text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-cyan-700 transition-colors"
         >
           + 新規請求書
         </Link>
@@ -48,7 +48,7 @@ export default async function InvoicesPage({
               href={s ? `/invoices?status=${s}` : '/invoices'}
               className={`px-4 py-2 text-sm whitespace-nowrap border-b-2 -mb-px transition-colors ${
                 active
-                  ? 'border-emerald-600 text-emerald-700 font-medium'
+                  ? 'border-cyan-600 text-cyan-700 font-medium'
                   : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300'
               }`}
             >
@@ -63,7 +63,7 @@ export default async function InvoicesPage({
       ) : (
         <table className="w-full">
           <thead>
-            <tr className="border-b-2 border-emerald-500">
+            <tr className="border-b-2 border-cyan-500">
               <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">請求番号</th>
               <th className="hidden sm:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">クライアント</th>
               <th className="hidden md:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">件名</th>
@@ -74,11 +74,11 @@ export default async function InvoicesPage({
           </thead>
           <tbody className="divide-y divide-gray-100">
             {invoices.map((inv) => (
-              <tr key={inv.id} className="hover:bg-emerald-50/30 transition-colors">
+              <tr key={inv.id} className="hover:bg-cyan-50/30 transition-colors">
                 <td className="py-3 pr-4">
                   <Link
                     href={`/invoices/${inv.id}`}
-                    className="font-medium text-emerald-600 hover:text-emerald-700 text-sm"
+                    className="font-medium text-cyan-600 hover:text-cyan-700 text-sm"
                   >
                     {inv.invoiceNumber}
                   </Link>

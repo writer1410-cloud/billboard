@@ -47,15 +47,15 @@ export const INVOICE_STATUS_LABELS: Record<string, string> = {
 
 export const QUOTE_STATUS_COLORS: Record<string, string> = {
   DRAFT: 'bg-gray-100 text-gray-600',
-  SENT: 'bg-emerald-50 text-emerald-700',
-  ACCEPTED: 'bg-emerald-100 text-emerald-800',
+  SENT: 'bg-cyan-50 text-cyan-700',
+  ACCEPTED: 'bg-cyan-100 text-cyan-800',
   REJECTED: 'bg-red-100 text-red-700',
   EXPIRED: 'bg-amber-100 text-amber-700',
 };
 
 export const INVOICE_STATUS_COLORS: Record<string, string> = {
   UNPAID: 'bg-amber-100 text-amber-700',
-  PAID: 'bg-emerald-100 text-emerald-800',
+  PAID: 'bg-cyan-100 text-cyan-800',
   OVERDUE: 'bg-red-100 text-red-700',
   CANCELLED: 'bg-gray-100 text-gray-600',
 };

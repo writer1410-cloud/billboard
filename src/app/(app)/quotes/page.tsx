@@ -12,12 +12,12 @@ export default async function QuotesPage() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-6 bg-emerald-600 rounded-none shrink-0" />
+          <div className="w-1 h-6 bg-cyan-600 rounded-none shrink-0" />
           <h1 className="text-xl font-bold text-gray-900">見積書</h1>
         </div>
         <Link
           href="/quotes/new"
-          className="bg-emerald-600 text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-emerald-700 transition-colors"
+          className="bg-cyan-600 text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-cyan-700 transition-colors"
         >
           + 新規見積書
         </Link>
@@ -28,7 +28,7 @@ export default async function QuotesPage() {
       ) : (
         <table className="w-full">
           <thead>
-            <tr className="border-b-2 border-emerald-500">
+            <tr className="border-b-2 border-cyan-500">
               <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">見積番号</th>
               <th className="hidden sm:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">クライアント</th>
               <th className="hidden md:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">件名</th>
@@ -39,11 +39,11 @@ export default async function QuotesPage() {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {quotes.map((q) => (
-              <tr key={q.id} className="hover:bg-emerald-50/30 transition-colors">
+              <tr key={q.id} className="hover:bg-cyan-50/30 transition-colors">
                 <td className="py-3 pr-4">
                   <Link
                     href={`/quotes/${q.id}`}
-                    className="font-medium text-emerald-600 hover:text-emerald-700 text-sm"
+                    className="font-medium text-cyan-600 hover:text-cyan-700 text-sm"
                   >
                     {q.quoteNumber}
                   </Link>

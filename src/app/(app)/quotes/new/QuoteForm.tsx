@@ -70,13 +70,13 @@ export default function QuoteForm({ clients, defaultClientId }: { clients: Clien
               <label className="block text-sm font-medium text-gray-700 mb-1">見積番号 *</label>
               <input type="text" required value={form.quoteNumber}
                 onChange={(e) => setForm({ ...form, quoteNumber: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">クライアント *</label>
               <select required value={form.clientId}
                 onChange={(e) => setForm({ ...form, clientId: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
                 <option value="">選択してください</option>
                 {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -86,19 +86,19 @@ export default function QuoteForm({ clients, defaultClientId }: { clients: Clien
               <input type="text" required value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 placeholder="Webサイト制作"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">有効期限 *</label>
               <input type="date" required value={form.validUntil}
                 onChange={(e) => setForm({ ...form, validUntil: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">消費税率</label>
               <select value={form.taxRate}
                 onChange={(e) => setForm({ ...form, taxRate: Number(e.target.value) })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
                 <option value={0.1}>10%</option>
                 <option value={0.08}>8%</option>
                 <option value={0}>非課税</option>
@@ -112,7 +112,7 @@ export default function QuoteForm({ clients, defaultClientId }: { clients: Clien
             <h2 className="font-semibold text-gray-900">明細</h2>
             <button type="button"
               onClick={() => setItems([...items, { description: '', quantity: 1, unitPrice: 0, amount: 0 }])}
-              className="text-sm text-emerald-600 hover:text-emerald-700">+ 行追加</button>
+              className="text-sm text-cyan-600 hover:text-cyan-700">+ 行追加</button>
           </div>
           <table className="w-full">
             <thead>
@@ -131,17 +131,17 @@ export default function QuoteForm({ clients, defaultClientId }: { clients: Clien
                     <input type="text" required value={item.description}
                       onChange={(e) => updateItem(i, 'description', e.target.value)}
                       placeholder="サービス内容"
-                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </td>
                   <td className="py-2 pr-2">
                     <input type="number" min="1" step="0.1" required value={item.quantity}
                       onChange={(e) => updateItem(i, 'quantity', Number(e.target.value))}
-                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </td>
                   <td className="py-2 pr-2">
                     <input type="number" min="0" step="1" required value={item.unitPrice}
                       onChange={(e) => updateItem(i, 'unitPrice', Number(e.target.value))}
-                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </td>
                   <td className="py-2 pr-2 text-right text-sm font-medium text-gray-700">
                     ¥{item.amount.toLocaleString('ja-JP')}
@@ -167,12 +167,12 @@ export default function QuoteForm({ clients, defaultClientId }: { clients: Clien
           <label className="block text-sm font-medium text-gray-700 mb-1">備考・注記</label>
           <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
             rows={3} placeholder="支払条件、備考など"
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
         </div>
 
         <div className="flex gap-3">
           <button type="submit" disabled={loading}
-            className="bg-emerald-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 disabled:opacity-50 transition-colors">
+            className="bg-cyan-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-cyan-700 disabled:opacity-50 transition-colors">
             {loading ? '保存中...' : '見積書を作成'}
           </button>
           <Link href="/quotes"

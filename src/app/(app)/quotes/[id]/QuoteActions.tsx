@@ -47,21 +47,21 @@ export default function QuoteActions({ quote, clientEmail }: { quote: Quote; cli
       </Link>
       {quote.status !== 'SENT' && quote.status !== 'ACCEPTED' && (
         <button onClick={() => action('send')} disabled={loading === 'send'}
-          className="px-3 py-1.5 border border-emerald-200 text-emerald-600 rounded-lg text-sm hover:bg-emerald-50 disabled:opacity-50 transition-colors">
+          className="px-3 py-1.5 border border-cyan-200 text-cyan-600 rounded-lg text-sm hover:bg-cyan-50 disabled:opacity-50 transition-colors">
           {loading === 'send' ? '送中...' : '✉ メール送付'}
         </button>
       )}
       {quote.status === 'SENT' && (
         <>
           <button onClick={() => action('accept')} disabled={loading === 'accept'}
-            className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700 disabled:opacity-50 transition-colors">
+            className="px-3 py-1.5 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 disabled:opacity-50 transition-colors">
             {loading === 'accept' ? '処理中...' : '承認済みにする'}
           </button>
         </>
       )}
       {(quote.status === 'ACCEPTED' || quote.status === 'SENT') && !quote.invoice && (
         <button onClick={() => action('convert')} disabled={loading === 'convert'}
-          className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700 disabled:opacity-50 transition-colors">
+          className="px-3 py-1.5 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 disabled:opacity-50 transition-colors">
           {loading === 'convert' ? '処理中...' : '請求書に変換'}
         </button>
       )}

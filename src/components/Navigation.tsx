@@ -71,7 +71,7 @@ export default function Navigation() {
               href={item.href}
               className={`flex flex-col items-center gap-1 py-2.5 w-12 rounded-lg text-center transition-colors ${
                 active
-                  ? 'bg-emerald-50 text-emerald-700'
+                  ? 'bg-cyan-50 text-cyan-700'
                   : 'text-gray-400 hover:bg-gray-50 hover:text-gray-700'
               }`}
             >
@@ -85,7 +85,7 @@ export default function Navigation() {
       {/* Mobile: bottom tab bar */}
       <nav
         className="md:hidden fixed bottom-0 left-0 right-0 bg-white z-50"
-        style={{ borderTop: '2px solid #d1fae5' }}
+        style={{ borderTop: '2px solid #cffafe' }}
       >
         <div className="flex">
           {navItems.map((item) => {
@@ -95,10 +95,10 @@ export default function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={`flex-1 flex flex-col items-center gap-1 py-2 pb-5 text-xs transition-colors ${
-                  active ? 'text-emerald-600' : 'text-gray-400'
+                  active ? 'text-cyan-600' : 'text-gray-400'
                 }`}
               >
-                <div className={`p-1.5 rounded-sm ${active ? 'bg-emerald-50' : ''}`}>
+                <div className={`p-1.5 rounded-sm ${active ? 'bg-cyan-50' : ''}`}>
                   <item.Icon />
                 </div>
                 <span className={active ? 'font-semibold' : ''}>{item.label}</span>

@@ -41,22 +41,22 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
       {/* Meta info */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm pb-6 mb-6 border-b border-gray-100">
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">クライアント</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">クライアント</p>
           <p className="font-medium text-gray-900">{invoice.client.name}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">発行日</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">発行日</p>
           <p className="font-medium text-gray-900">{formatDate(invoice.issueDate)}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">支払期限</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">支払期限</p>
           <p className={`font-medium ${invoice.status === 'OVERDUE' ? 'text-red-600' : 'text-gray-900'}`}>
             {formatDate(invoice.dueDate)}
           </p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">入金日</p>
-          <p className={`font-medium ${invoice.paidAt ? 'text-emerald-600' : 'text-gray-400'}`}>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">入金日</p>
+          <p className={`font-medium ${invoice.paidAt ? 'text-cyan-600' : 'text-gray-400'}`}>
             {invoice.paidAt ? formatDate(invoice.paidAt) : '—'}
           </p>
         </div>
@@ -65,7 +65,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
       {/* Items table */}
       <table className="w-full mb-6">
         <thead>
-          <tr className="border-b-2 border-emerald-500">
+          <tr className="border-b-2 border-cyan-500">
             <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">品目・内容</th>
             <th className="text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">数量</th>
             <th className="hidden sm:table-cell text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">単価</th>
@@ -108,7 +108,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
       {invoice.reminders.length > 0 && (
         <div className="mb-6">
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-3">リマインド履歴</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-3">リマインド履歴</p>
           <div className="space-y-2">
             {invoice.reminders.map((r) => (
               <p key={r.id} className="text-sm text-gray-600">
@@ -122,7 +122,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
       {invoice.quote && (
         <p className="text-sm text-gray-500">
           見積書:{' '}
-          <Link href={`/quotes/${invoice.quote.id}`} className="text-emerald-600 hover:underline">
+          <Link href={`/quotes/${invoice.quote.id}`} className="text-cyan-600 hover:underline">
             {invoice.quote.quoteNumber}
           </Link>
         </p>

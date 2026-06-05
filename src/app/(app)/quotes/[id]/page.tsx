@@ -40,19 +40,19 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
       {/* Meta info */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm pb-6 mb-6 border-b border-gray-100">
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">クライアント</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">クライアント</p>
           <p className="font-medium text-gray-900">{quote.client.name}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">発行日</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">発行日</p>
           <p className="font-medium text-gray-900">{formatDate(quote.createdAt)}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">有効期限</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">有効期限</p>
           <p className="font-medium text-gray-900">{formatDate(quote.validUntil)}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">送付日</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">送付日</p>
           <p className="font-medium text-gray-900">{quote.sentAt ? formatDate(quote.sentAt) : '未送付'}</p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
       {/* Items table */}
       <table className="w-full mb-6">
         <thead>
-          <tr className="border-b-2 border-emerald-500">
+          <tr className="border-b-2 border-cyan-500">
             <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">品目・内容</th>
             <th className="text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">数量</th>
             <th className="hidden sm:table-cell text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">単価</th>
@@ -102,9 +102,9 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
       )}
 
       {quote.invoice && (
-        <div className="border-l-4 border-emerald-500 pl-4 py-1 text-sm">
+        <div className="border-l-4 border-cyan-500 pl-4 py-1 text-sm">
           <span className="text-gray-500">請求書: </span>
-          <Link href={`/invoices/${quote.invoice.id}`} className="font-medium text-emerald-600 hover:underline">
+          <Link href={`/invoices/${quote.invoice.id}`} className="font-medium text-cyan-600 hover:underline">
             {quote.invoice.invoiceNumber}
           </Link>
         </div>

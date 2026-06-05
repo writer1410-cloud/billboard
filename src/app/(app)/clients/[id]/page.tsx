@@ -23,7 +23,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
       <div className="flex items-center gap-3 mb-8">
         <Link href="/clients" className="text-gray-400 hover:text-gray-600">←</Link>
         <div className="flex items-center gap-2">
-          <div className="w-1 h-6 bg-emerald-600 rounded-none shrink-0" />
+          <div className="w-1 h-6 bg-cyan-600 rounded-none shrink-0" />
           <h1 className="text-xl font-bold text-gray-900">{client.name}</h1>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
           <p className="font-medium text-gray-500 text-xs uppercase tracking-wide mb-3">連絡先情報</p>
           <p>
             <span className="text-gray-400">メール: </span>
-            <a href={`mailto:${client.email}`} className="text-emerald-600">{client.email}</a>
+            <a href={`mailto:${client.email}`} className="text-cyan-600">{client.email}</a>
           </p>
           {client.phone && <p><span className="text-gray-400">電話: </span>{client.phone}</p>}
           {client.address && <p><span className="text-gray-400">住所: </span>{client.address}</p>}
@@ -46,7 +46,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         </div>
         <div>
           <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">入金済み合計</p>
-          <p className="text-2xl font-bold text-emerald-600">{formatCurrency(totalPaid)}</p>
+          <p className="text-2xl font-bold text-cyan-600">{formatCurrency(totalPaid)}</p>
         </div>
       </div>
 
@@ -55,11 +55,11 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         <div className="pb-8 lg:pb-0 lg:pr-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-900">見積書 ({client.quotes.length}件)</h2>
-            <Link href={`/quotes/new?clientId=${client.id}`} className="text-sm text-emerald-600 hover:text-emerald-700">+ 新規</Link>
+            <Link href={`/quotes/new?clientId=${client.id}`} className="text-sm text-cyan-600 hover:text-cyan-700">+ 新規</Link>
           </div>
           <div className="divide-y divide-gray-100">
             {client.quotes.map((q) => (
-              <Link key={q.id} href={`/quotes/${q.id}`} className="flex items-center justify-between py-3 hover:bg-emerald-50/30 -mx-2 px-2 transition-colors">
+              <Link key={q.id} href={`/quotes/${q.id}`} className="flex items-center justify-between py-3 hover:bg-cyan-50/30 -mx-2 px-2 transition-colors">
                 <div className="min-w-0 pr-3">
                   <p className="text-sm font-medium text-gray-900">{q.quoteNumber}</p>
                   <p className="text-xs text-gray-500 truncate">{q.title}</p>
@@ -80,11 +80,11 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         <div className="pt-8 lg:pt-0 lg:pl-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-900">請求書 ({client.invoices.length}件)</h2>
-            <Link href={`/invoices/new?clientId=${client.id}`} className="text-sm text-emerald-600 hover:text-emerald-700">+ 新規</Link>
+            <Link href={`/invoices/new?clientId=${client.id}`} className="text-sm text-cyan-600 hover:text-cyan-700">+ 新規</Link>
           </div>
           <div className="divide-y divide-gray-100">
             {client.invoices.map((inv) => (
-              <Link key={inv.id} href={`/invoices/${inv.id}`} className="flex items-center justify-between py-3 hover:bg-emerald-50/30 -mx-2 px-2 transition-colors">
+              <Link key={inv.id} href={`/invoices/${inv.id}`} className="flex items-center justify-between py-3 hover:bg-cyan-50/30 -mx-2 px-2 transition-colors">
                 <div className="min-w-0 pr-3">
                   <p className="text-sm font-medium text-gray-900">{inv.invoiceNumber}</p>
                   <p className="text-xs text-gray-500">期限: {formatDate(inv.dueDate)}</p>

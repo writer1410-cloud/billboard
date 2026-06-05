@@ -43,7 +43,7 @@ export default function InvoiceActions({ invoice }: { invoice: Invoice }) {
         <>
           {!invoice.status.includes('SENT') && (
             <button onClick={() => action('send')} disabled={loading === 'send'}
-              className="px-3 py-1.5 border border-emerald-200 text-emerald-600 rounded-lg text-sm hover:bg-emerald-50 disabled:opacity-50 transition-colors">
+              className="px-3 py-1.5 border border-cyan-200 text-cyan-600 rounded-lg text-sm hover:bg-cyan-50 disabled:opacity-50 transition-colors">
               {loading === 'send' ? '送中...' : '✉ メール送付'}
             </button>
           )}
@@ -54,7 +54,7 @@ export default function InvoiceActions({ invoice }: { invoice: Invoice }) {
                 {loading === 'remind' ? '送中...' : '🔔 リマインド'}
               </button>
               <button onClick={() => action('pay')} disabled={loading === 'pay'}
-                className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700 disabled:opacity-50 transition-colors">
+                className="px-3 py-1.5 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 disabled:opacity-50 transition-colors">
                 {loading === 'pay' ? '処理中...' : '✓ 入金確認'}
               </button>
             </>
