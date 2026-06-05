@@ -6,7 +6,10 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
   const { id } = await params;
   const quote = await prisma.quote.findUnique({
     where: { id },
-    include: { items: { orderBy: { sortOrder: 'asc' } } },
+    include: {
+      items: { orderBy: { sortOrder: 'asc' } },
+      invoice: true,
+    },
   });
   if (!quote) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   if (quote.invoice) return NextResponse.json({ error: 'すでに請求書が存在します' }, { status: 400 });
