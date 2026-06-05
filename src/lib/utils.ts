@@ -46,16 +46,16 @@ export const INVOICE_STATUS_LABELS: Record<string, string> = {
 };
 
 export const QUOTE_STATUS_COLORS: Record<string, string> = {
-  DRAFT: 'bg-gray-100 text-gray-700',
-  SENT: 'bg-blue-100 text-blue-700',
-  ACCEPTED: 'bg-green-100 text-green-700',
+  DRAFT: 'bg-gray-100 text-gray-600',
+  SENT: 'bg-cyan-50 text-cyan-700',
+  ACCEPTED: 'bg-cyan-100 text-cyan-800',
   REJECTED: 'bg-red-100 text-red-700',
-  EXPIRED: 'bg-yellow-100 text-yellow-700',
+  EXPIRED: 'bg-amber-100 text-amber-700',
 };
 
 export const INVOICE_STATUS_COLORS: Record<string, string> = {
-  UNPAID: 'bg-yellow-100 text-yellow-700',
-  PAID: 'bg-green-100 text-green-700',
+  UNPAID: 'bg-amber-100 text-amber-700',
+  PAID: 'bg-cyan-100 text-cyan-800',
   OVERDUE: 'bg-red-100 text-red-700',
-  CANCELLED: 'bg-gray-100 text-gray-700',
+  CANCELLED: 'bg-gray-100 text-gray-600',
 };

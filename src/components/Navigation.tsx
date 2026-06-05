@@ -3,43 +3,110 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+function GridIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
+      <rect x="0.5" y="0.5" width="5.5" height="5.5" rx="1" />
+      <rect x="8" y="0.5" width="5.5" height="5.5" rx="1" />
+      <rect x="0.5" y="8" width="5.5" height="5.5" rx="1" />
+      <rect x="8" y="8" width="5.5" height="5.5" rx="1" />
+    </svg>
+  );
+}
+
+function UserIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
+      <rect x="3.5" y="0.5" width="7" height="6" rx="3.5" />
+      <path d="M0.5 13.5 C0.5 9.5 3 8 7 8 C11 8 13.5 9.5 13.5 13.5 Z" />
+    </svg>
+  );
+}
+
+function DocIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
+      <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" />
+      <rect x="4" y="4" width="6" height="1" fill="white" rx="0.3" />
+      <rect x="4" y="6.5" width="4.5" height="1" fill="white" rx="0.3" />
+      <rect x="4" y="9" width="5.5" height="1" fill="white" rx="0.3" />
+    </svg>
+  );
+}
+
+function InvIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
+      <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" />
+      <rect x="4" y="3.5" width="6" height="1" fill="white" rx="0.3" />
+      <rect x="4" y="6" width="4" height="1" fill="white" rx="0.3" />
+      <rect x="5.5" y="8.5" width="3" height="3.5" fill="white" rx="0.2" />
+      <rect x="4.5" y="9.5" width="5" height="0.8" fill="white" rx="0.2" />
+      <rect x="4.5" y="11" width="5" height="0.8" fill="white" rx="0.2" />
+    </svg>
+  );
+}
+
 const navItems = [
-  { href: '/', label: 'ダッシュボード', icon: '📊' },
-  { href: '/clients', label: 'クライアント', icon: '👥' },
-  { href: '/quotes', label: '見積書', icon: '📝' },
-  { href: '/invoices', label: '請求書', icon: '💰' },
+  { href: '/', label: 'ホーム', Icon: GridIcon },
+  { href: '/clients', label: '顧客', Icon: UserIcon },
+  { href: '/quotes', label: '見積', Icon: DocIcon },
+  { href: '/invoices', label: '請求', Icon: InvIcon },
 ];
 
 export default function Navigation() {
   const pathname = usePathname();
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
-    <nav className="w-56 bg-white border-r border-gray-200 flex flex-col shrink-0">
-      <div className="p-5 border-b border-gray-200">
-        <h1 className="font-bold text-lg text-gray-900">FreeBill</h1>
-        <p className="text-xs text-gray-500">請求管理システム</p>
-      </div>
-      <div className="flex-1 p-3">
+    <>
+      {/* Desktop: narrow icon sidebar */}
+      <nav className="hidden md:flex w-14 bg-white border-r border-gray-200 flex-col items-center py-3 gap-1 shrink-0">
         {navItems.map((item) => {
-          const isActive = item.href === '/'
-            ? pathname === '/'
-            : pathname.startsWith(item.href);
+          const active = isActive(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg mb-1 text-sm transition-colors ${
-                isActive
-                  ? 'bg-blue-50 text-blue-700 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              className={`flex flex-col items-center gap-1 py-2.5 w-12 rounded-lg text-center transition-colors ${
+                active
+                  ? 'bg-cyan-50 text-cyan-700'
+                  : 'text-gray-400 hover:bg-gray-50 hover:text-gray-700'
               }`}
             >
-              <span>{item.icon}</span>
-              {item.label}
+              <item.Icon />
+              <span className="text-[10px] font-medium leading-none">{item.label}</span>
             </Link>
           );
         })}
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile: bottom tab bar */}
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white z-50"
+        style={{ borderTop: '2px solid #cffafe' }}
+      >
+        <div className="flex">
+          {navItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex-1 flex flex-col items-center gap-1 py-2 pb-5 text-xs transition-colors ${
+                  active ? 'text-cyan-600' : 'text-gray-400'
+                }`}
+              >
+                <div className={`p-1.5 rounded-sm ${active ? 'bg-cyan-50' : ''}`}>
+                  <item.Icon />
+                </div>
+                <span className={active ? 'font-semibold' : ''}>{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }

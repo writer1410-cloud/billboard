@@ -3,40 +3,24 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { generateInvoiceNumber, formatDateInput, addDays } from '@/lib/utils';
+import { generateQuoteNumber, formatDateInput, addDays } from '@/lib/utils';
 
-interface Client { id: string; name: string; }
+interface Client { id: string; name: string; email: string; }
 interface Item { description: string; quantity: number; unitPrice: number; amount: number; }
-interface SourceQuote {
-  id: string; title: string; clientId: string; taxRate: number;
-  items: Item[];
-}
 
-export default function InvoiceForm({
-  clients, defaultClientId, sourceQuote,
-}: {
-  clients: Client[];
-  defaultClientId?: string;
-  sourceQuote?: SourceQuote | null;
-}) {
+export default function QuoteForm({ clients, defaultClientId }: { clients: Client[]; defaultClientId?: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
-    invoiceNumber: generateInvoiceNumber(),
-    clientId: sourceQuote?.clientId ?? defaultClientId ?? '',
-    title: sourceQuote?.title ?? '',
-    taxRate: sourceQuote?.taxRate ?? 0.1,
-    issueDate: formatDateInput(new Date()),
-    dueDate: formatDateInput(addDays(new Date(), 30)),
+    quoteNumber: generateQuoteNumber(),
+    clientId: defaultClientId ?? '',
+    title: '',
+    taxRate: 0.1,
+    validUntil: formatDateInput(addDays(new Date(), 30)),
     notes: '',
-    quoteId: sourceQuote?.id ?? '',
   });
-  const [items, setItems] = useState<Item[]>(
-    sourceQuote?.items.length
-      ? sourceQuote.items.map((i) => ({ description: i.description, quantity: i.quantity, unitPrice: i.unitPrice, amount: i.amount }))
-      : [{ description: '', quantity: 1, unitPrice: 0, amount: 0 }]
-  );
+  const [items, setItems] = useState<Item[]>([{ description: '', quantity: 1, unitPrice: 0, amount: 0 }]);
 
   const updateItem = (i: number, field: keyof Item, value: string | number) => {
     const updated = [...items];
@@ -56,14 +40,14 @@ export default function InvoiceForm({
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/invoices', {
+      const res = await fetch('/api/quotes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, items, subtotal, tax, total }),
       });
       if (!res.ok) throw new Error((await res.json()).error ?? 'エラー');
-      const invoice = await res.json();
-      router.push(`/invoices/${invoice.id}`);
+      const quote = await res.json();
+      router.push(`/quotes/${quote.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
       setLoading(false);
@@ -73,9 +57,8 @@ export default function InvoiceForm({
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <Link href="/invoices" className="text-gray-400 hover:text-gray-600 text-xl">←</Link>
-        <h1 className="text-2xl font-bold text-gray-900">新規請求書</h1>
-        {sourceQuote && <span className="text-sm text-gray-500">見積書から変換</span>}
+        <Link href="/quotes" className="text-gray-400 hover:text-gray-600 text-xl">←</Link>
+        <h1 className="text-2xl font-bold text-gray-900">新規見積書</h1>
       </div>
       <form onSubmit={handleSubmit}>
         {error && <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg text-sm mb-4">{error}</div>}
@@ -84,16 +67,16 @@ export default function InvoiceForm({
           <h2 className="font-semibold text-gray-900 mb-4">基本情報</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">請求番号 *</label>
-              <input type="text" required value={form.invoiceNumber}
-                onChange={(e) => setForm({ ...form, invoiceNumber: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">見積番号 *</label>
+              <input type="text" required value={form.quoteNumber}
+                onChange={(e) => setForm({ ...form, quoteNumber: e.target.value })}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">クライアント *</label>
               <select required value={form.clientId}
                 onChange={(e) => setForm({ ...form, clientId: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
                 <option value="">選択してください</option>
                 {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -102,25 +85,20 @@ export default function InvoiceForm({
               <label className="block text-sm font-medium text-gray-700 mb-1">件名 *</label>
               <input type="text" required value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                placeholder="Webサイト制作"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">発行日 *</label>
-              <input type="date" required value={form.issueDate}
-                onChange={(e) => setForm({ ...form, issueDate: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">支払期限 *</label>
-              <input type="date" required value={form.dueDate}
-                onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">有効期限 *</label>
+              <input type="date" required value={form.validUntil}
+                onChange={(e) => setForm({ ...form, validUntil: e.target.value })}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">消費税率</label>
               <select value={form.taxRate}
                 onChange={(e) => setForm({ ...form, taxRate: Number(e.target.value) })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
                 <option value={0.1}>10%</option>
                 <option value={0.08}>8%</option>
                 <option value={0}>非課税</option>
@@ -134,7 +112,7 @@ export default function InvoiceForm({
             <h2 className="font-semibold text-gray-900">明細</h2>
             <button type="button"
               onClick={() => setItems([...items, { description: '', quantity: 1, unitPrice: 0, amount: 0 }])}
-              className="text-sm text-blue-600 hover:text-blue-700">+ 行追加</button>
+              className="text-sm text-cyan-600 hover:text-cyan-700">+ 行追加</button>
           </div>
           <table className="w-full">
             <thead>
@@ -152,17 +130,18 @@ export default function InvoiceForm({
                   <td className="py-2 pr-2">
                     <input type="text" required value={item.description}
                       onChange={(e) => updateItem(i, 'description', e.target.value)}
-                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                      placeholder="サービス内容"
+                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </td>
                   <td className="py-2 pr-2">
                     <input type="number" min="1" step="0.1" required value={item.quantity}
                       onChange={(e) => updateItem(i, 'quantity', Number(e.target.value))}
-                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </td>
                   <td className="py-2 pr-2">
                     <input type="number" min="0" step="1" required value={item.unitPrice}
                       onChange={(e) => updateItem(i, 'unitPrice', Number(e.target.value))}
-                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                      className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-cyan-500" />
                   </td>
                   <td className="py-2 pr-2 text-right text-sm font-medium text-gray-700">
                     ¥{item.amount.toLocaleString('ja-JP')}
@@ -187,16 +166,16 @@ export default function InvoiceForm({
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-1">備考・注記</label>
           <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
-            rows={3}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            rows={3} placeholder="支払条件、備考など"
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500" />
         </div>
 
         <div className="flex gap-3">
           <button type="submit" disabled={loading}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors">
-            {loading ? '保存中...' : '請求書を作成'}
+            className="bg-cyan-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-cyan-700 disabled:opacity-50 transition-colors">
+            {loading ? '保存中...' : '見積書を作成'}
           </button>
-          <Link href="/invoices"
+          <Link href="/quotes"
             className="px-6 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-colors">
             キャンセル
           </Link>

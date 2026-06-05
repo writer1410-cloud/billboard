@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import PrintButton from './PrintButton';
 
 export default async function QuotePrintPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -36,7 +37,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
         `}</style>
       </head>
       <body>
-        <button className="print-btn" onClick={() => window.print()}>印刷 / PDF保存</button>
+        <PrintButton />
         <h1>見積書 {quote.quoteNumber}</h1>
         <div className="meta">
           <div>

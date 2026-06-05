@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import PrintButton from './PrintButton';
 
 export default async function InvoicePrintPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -38,7 +39,7 @@ export default async function InvoicePrintPage({ params }: { params: Promise<{ i
         `}</style>
       </head>
       <body>
-        <button className="print-btn" onClick={() => window.print()}>印刷 / PDF保存</button>
+        <PrintButton />
         <h1>
           請求書 {invoice.invoiceNumber}
           {invoice.status === 'PAID' && <span className="stamp">入金済</span>}
