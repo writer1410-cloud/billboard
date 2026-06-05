@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-
-function GridIcon({ size = 15 }: { size?: number }) {
+function GridIcon({ size = 18 }: { size?: number }) {
   return (
     <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
       <rect x="0.5" y="0.5" width="5.5" height="5.5" rx="1" />
@@ -15,7 +14,7 @@ function GridIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-function UserIcon({ size = 15 }: { size?: number }) {
+function UserIcon({ size = 18 }: { size?: number }) {
   return (
     <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
       <rect x="3.5" y="0.5" width="7" height="6" rx="3.5" />
@@ -24,7 +23,7 @@ function UserIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-function DocIcon({ size = 15 }: { size?: number }) {
+function DocIcon({ size = 18 }: { size?: number }) {
   return (
     <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
       <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" />
@@ -35,7 +34,7 @@ function DocIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-function InvIcon({ size = 15 }: { size?: number }) {
+function InvIcon({ size = 18 }: { size?: number }) {
   return (
     <svg viewBox="0 0 14 14" fill="currentColor" width={size} height={size}>
       <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" />
@@ -49,10 +48,10 @@ function InvIcon({ size = 15 }: { size?: number }) {
 }
 
 const navItems = [
-  { href: '/', label: 'ダッシュボード', Icon: GridIcon },
-  { href: '/clients', label: 'クライアント', Icon: UserIcon },
-  { href: '/quotes', label: '見積書', Icon: DocIcon },
-  { href: '/invoices', label: '請求書', Icon: InvIcon },
+  { href: '/', label: 'ホーム', Icon: GridIcon },
+  { href: '/clients', label: '顧客', Icon: UserIcon },
+  { href: '/quotes', label: '見積', Icon: DocIcon },
+  { href: '/invoices', label: '請求', Icon: InvIcon },
 ];
 
 export default function Navigation() {
@@ -62,43 +61,28 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <nav className="hidden md:flex w-56 bg-white border-r border-gray-100 flex-col shrink-0">
-        <div className="px-5 pt-6 pb-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 bg-emerald-600 rounded-sm grid grid-cols-2 gap-px p-1 shrink-0">
-              <div className="bg-white" />
-              <div className="bg-white/50" />
-              <div className="bg-white/50" />
-              <div className="bg-white" />
-            </div>
-            <h1 className="font-bold text-lg text-gray-900 tracking-tight">FreeBill</h1>
-          </div>
-          <p className="text-xs text-gray-400 mt-1 ml-[2.375rem]">請求管理システム</p>
-        </div>
-        <div className="mx-5 border-b border-gray-100" />
-        <div className="flex-1 p-3 pt-3">
-          {navItems.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 mb-0.5 text-sm transition-colors rounded-r-lg ${
-                  active
-                    ? 'bg-emerald-50 text-emerald-700 font-medium border-l-[3px] border-emerald-600'
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800 border-l-[3px] border-transparent'
-                }`}
-              >
-                <item.Icon />
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
+      {/* Desktop: narrow icon sidebar */}
+      <nav className="hidden md:flex w-14 bg-white border-r border-gray-200 flex-col items-center py-3 gap-1 shrink-0">
+        {navItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center gap-1 py-2.5 w-12 rounded-lg text-center transition-colors ${
+                active
+                  ? 'bg-emerald-50 text-emerald-700'
+                  : 'text-gray-400 hover:bg-gray-50 hover:text-gray-700'
+              }`}
+            >
+              <item.Icon />
+              <span className="text-[10px] font-medium leading-none">{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
 
-      {/* Mobile bottom navigation */}
+      {/* Mobile: bottom tab bar */}
       <nav
         className="md:hidden fixed bottom-0 left-0 right-0 bg-white z-50"
         style={{ borderTop: '2px solid #d1fae5' }}
