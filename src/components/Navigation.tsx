@@ -3,29 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-function SidebarWave() {
-  return (
-    <svg
-      viewBox="0 0 224 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ width: '100%', height: 18, display: 'block' }}
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M0 9 C28 1 56 17 84 9 C112 1 140 17 168 9 C196 1 210 13 224 9 V18 H0 Z"
-        fill="#059669"
-        fillOpacity="0.07"
-      />
-      <path
-        d="M0 9 C28 1 56 17 84 9 C112 1 140 17 168 9 C196 1 210 13 224 9"
-        stroke="#059669"
-        strokeWidth="1.5"
-        strokeOpacity="0.3"
-      />
-    </svg>
-  );
-}
 
 function GridIcon({ size = 15 }: { size?: number }) {
   return (
@@ -99,8 +76,8 @@ export default function Navigation() {
           </div>
           <p className="text-xs text-gray-400 mt-1 ml-[2.375rem]">請求管理システム</p>
         </div>
-        <SidebarWave />
-        <div className="flex-1 p-3 pt-2">
+        <div className="mx-5 border-b border-gray-100" />
+        <div className="flex-1 p-3 pt-3">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (

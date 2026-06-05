@@ -23,85 +23,109 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-6">
-        <Link href="/invoices" className="text-gray-400 hover:text-gray-600 text-xl">←</Link>
-        <div className="flex-1">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-gray-900">{invoice.invoiceNumber}</h1>
-            <span className={`text-sm px-2 py-1 rounded-sm ${INVOICE_STATUS_COLORS[invoice.status]}`}>
+      {/* Header */}
+      <div className="flex flex-wrap items-start gap-3 mb-8">
+        <Link href="/invoices" className="text-gray-400 hover:text-gray-600 mt-1">←</Link>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-xl font-bold text-gray-900">{invoice.invoiceNumber}</h1>
+            <span className={`text-xs px-2 py-1 rounded-sm ${INVOICE_STATUS_COLORS[invoice.status]}`}>
               {INVOICE_STATUS_LABELS[invoice.status]}
             </span>
           </div>
-          <p className="text-sm text-gray-500 mt-0.5">{invoice.client.name} · {invoice.title}</p>
+          <p className="text-sm text-gray-500 mt-0.5 truncate">{invoice.client.name} · {invoice.title}</p>
         </div>
         <InvoiceActions invoice={invoice} />
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-6">
-          <div><span className="text-gray-400">クライアント</span><p className="font-medium mt-0.5">{invoice.client.name}</p></div>
-          <div><span className="text-gray-400">発行日</span><p className="font-medium mt-0.5">{formatDate(invoice.issueDate)}</p></div>
-          <div><span className="text-gray-400">支払期限</span><p className={`font-medium mt-0.5 ${invoice.status === 'OVERDUE' ? 'text-red-600' : ''}`}>{formatDate(invoice.dueDate)}</p></div>
-          <div><span className="text-gray-400">入金日</span><p className="font-medium mt-0.5 text-emerald-600">{invoice.paidAt ? formatDate(invoice.paidAt) : '-'}</p></div>
+      {/* Meta info */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm pb-6 mb-6 border-b border-gray-100">
+        <div>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">クライアント</p>
+          <p className="font-medium text-gray-900">{invoice.client.name}</p>
         </div>
-
-        <table className="w-full mb-4">
-          <thead>
-            <tr className="border-b-2 border-gray-200">
-              <th className="text-left pb-2 text-sm font-medium text-gray-600">品目・内容</th>
-              <th className="text-right pb-2 text-sm font-medium text-gray-600">数量</th>
-              <th className="text-right pb-2 text-sm font-medium text-gray-600">単価</th>
-              <th className="text-right pb-2 text-sm font-medium text-gray-600">金額</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice.items.map((item) => (
-              <tr key={item.id} className="border-b border-gray-100">
-                <td className="py-3 text-sm">{item.description}</td>
-                <td className="py-3 text-sm text-right text-gray-600">{item.quantity}</td>
-                <td className="py-3 text-sm text-right text-gray-600">{formatCurrency(item.unitPrice)}</td>
-                <td className="py-3 text-sm text-right font-medium">{formatCurrency(item.amount)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="flex justify-end">
-          <div className="w-56 space-y-1 text-sm">
-            <div className="flex justify-between"><span className="text-gray-500">小計</span><span>{formatCurrency(invoice.subtotal)}</span></div>
-            <div className="flex justify-between">
-              <span className="text-gray-500">消費税 ({(invoice.taxRate * 100).toFixed(0)}%)</span>
-              <span>{formatCurrency(invoice.tax)}</span>
-            </div>
-            <div className="flex justify-between font-bold text-base border-t border-gray-200 pt-2">
-              <span>請求金額</span><span>{formatCurrency(invoice.total)}</span>
-            </div>
-          </div>
+        <div>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">発行日</p>
+          <p className="font-medium text-gray-900">{formatDate(invoice.issueDate)}</p>
         </div>
-
-        {invoice.notes && (
-          <div className="mt-4 p-3 bg-gray-50 rounded-lg text-sm text-gray-600">{invoice.notes}</div>
-        )}
+        <div>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">支払期限</p>
+          <p className={`font-medium ${invoice.status === 'OVERDUE' ? 'text-red-600' : 'text-gray-900'}`}>
+            {formatDate(invoice.dueDate)}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">入金日</p>
+          <p className={`font-medium ${invoice.paidAt ? 'text-emerald-600' : 'text-gray-400'}`}>
+            {invoice.paidAt ? formatDate(invoice.paidAt) : '—'}
+          </p>
+        </div>
       </div>
 
+      {/* Items table */}
+      <table className="w-full mb-6">
+        <thead>
+          <tr className="border-b-2 border-emerald-500">
+            <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">品目・内容</th>
+            <th className="text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">数量</th>
+            <th className="hidden sm:table-cell text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">単価</th>
+            <th className="text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">金額</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-100">
+          {invoice.items.map((item) => (
+            <tr key={item.id}>
+              <td className="py-3 pr-4 text-sm text-gray-900">{item.description}</td>
+              <td className="py-3 pr-4 text-sm text-right text-gray-600">{item.quantity}</td>
+              <td className="hidden sm:table-cell py-3 pr-4 text-sm text-right text-gray-600">{formatCurrency(item.unitPrice)}</td>
+              <td className="py-3 text-sm text-right font-medium text-gray-900">{formatCurrency(item.amount)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Totals */}
+      <div className="flex justify-end pb-6 mb-6 border-b border-gray-100">
+        <div className="w-52 space-y-1.5 text-sm">
+          <div className="flex justify-between text-gray-600">
+            <span>小計</span>
+            <span>{formatCurrency(invoice.subtotal)}</span>
+          </div>
+          <div className="flex justify-between text-gray-600">
+            <span>消費税 ({(invoice.taxRate * 100).toFixed(0)}%)</span>
+            <span>{formatCurrency(invoice.tax)}</span>
+          </div>
+          <div className="flex justify-between font-bold text-base border-t border-gray-200 pt-2 text-gray-900">
+            <span>請求金額</span>
+            <span>{formatCurrency(invoice.total)}</span>
+          </div>
+        </div>
+      </div>
+
+      {invoice.notes && (
+        <p className="text-sm text-gray-600 mb-6">{invoice.notes}</p>
+      )}
+
       {invoice.reminders.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-900 mb-3">リマインド履歴</h2>
+        <div className="mb-6">
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-3">リマインド履歴</p>
           <div className="space-y-2">
             {invoice.reminders.map((r) => (
-              <div key={r.id} className="flex items-center gap-3 text-sm">
-                <span className="text-red-500">⚠️</span>
-                <span className="text-gray-600">{formatDate(r.sentAt)}に{r.type === 'OVERDUE' ? '延滞リマインド' : 'リマインド'}を送付</span>
-              </div>
+              <p key={r.id} className="text-sm text-gray-600">
+                {formatDate(r.sentAt)} — {r.type === 'OVERDUE' ? '延滞リマインド' : 'リマインド'}送付
+              </p>
             ))}
           </div>
         </div>
       )}
 
       {invoice.quote && (
-        <div className="mt-4 text-sm text-gray-500">
-          見積書: <Link href={`/quotes/${invoice.quote.id}`} className="text-emerald-600 hover:underline">{invoice.quote.quoteNumber}</Link>
-        </div>
+        <p className="text-sm text-gray-500">
+          見積書:{' '}
+          <Link href={`/quotes/${invoice.quote.id}`} className="text-emerald-600 hover:underline">
+            {invoice.quote.quoteNumber}
+          </Link>
+        </p>
       )}
     </div>
   );

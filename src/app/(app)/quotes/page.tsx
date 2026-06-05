@@ -10,40 +10,51 @@ export default async function QuotesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">見積書</h1>
-        <Link href="/quotes/new"
-          className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-6 bg-emerald-600 rounded-none shrink-0" />
+          <h1 className="text-xl font-bold text-gray-900">見積書</h1>
+        </div>
+        <Link
+          href="/quotes/new"
+          className="bg-emerald-600 text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-emerald-700 transition-colors"
+        >
           + 新規見積書
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-        <table className="w-full min-w-[560px]">
+      {quotes.length === 0 ? (
+        <p className="text-gray-400 py-16 text-center">見積書がありません</p>
+      ) : (
+        <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">見積番号</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">クライアント</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">件名</th>
-              <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">金額</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">有効期限</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">ステータス</th>
+            <tr className="border-b-2 border-emerald-500">
+              <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">見積番号</th>
+              <th className="hidden sm:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">クライアント</th>
+              <th className="hidden md:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">件名</th>
+              <th className="text-right pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">金額</th>
+              <th className="hidden sm:table-cell text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide pl-4">有効期限</th>
+              <th className="text-left pb-2 text-xs font-medium text-gray-500 uppercase tracking-wide pl-4">ステータス</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {quotes.map((q) => (
-              <tr key={q.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3">
-                  <Link href={`/quotes/${q.id}`}
-                    className="font-medium text-emerald-600 hover:text-emerald-700 text-sm">{q.quoteNumber}</Link>
+              <tr key={q.id} className="hover:bg-emerald-50/30 transition-colors">
+                <td className="py-3 pr-4">
+                  <Link
+                    href={`/quotes/${q.id}`}
+                    className="font-medium text-emerald-600 hover:text-emerald-700 text-sm"
+                  >
+                    {q.quoteNumber}
+                  </Link>
+                  <p className="text-xs text-gray-400 sm:hidden mt-0.5">{q.client.name}</p>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">{q.client.name}</td>
-                <td className="px-4 py-3 text-sm text-gray-700">{q.title}</td>
-                <td className="px-4 py-3 text-sm font-semibold text-gray-900 text-right">{formatCurrency(q.total)}</td>
-                <td className="px-4 py-3 text-sm text-gray-500">{formatDate(q.validUntil)}</td>
-                <td className="px-4 py-3">
-                  <span className={`text-xs px-2 py-1 rounded-full ${QUOTE_STATUS_COLORS[q.status]}`}>
+                <td className="hidden sm:table-cell py-3 pr-4 text-sm text-gray-600">{q.client.name}</td>
+                <td className="hidden md:table-cell py-3 pr-4 text-sm text-gray-700 max-w-[160px] truncate">{q.title}</td>
+                <td className="py-3 pr-4 text-sm font-semibold text-gray-900 text-right">{formatCurrency(q.total)}</td>
+                <td className="hidden sm:table-cell py-3 pr-4 text-sm text-gray-500 pl-4">{formatDate(q.validUntil)}</td>
+                <td className="py-3 pl-4">
+                  <span className={`text-xs px-1.5 py-0.5 rounded-sm ${QUOTE_STATUS_COLORS[q.status]}`}>
                     {QUOTE_STATUS_LABELS[q.status]}
                   </span>
                 </td>
@@ -51,13 +62,7 @@ export default async function QuotesPage() {
             ))}
           </tbody>
         </table>
-        </div>
-        {quotes.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-400">見積書がありません</p>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }

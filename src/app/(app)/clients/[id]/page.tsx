@@ -20,77 +20,84 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-6">
-        <Link href="/clients" className="text-gray-400 hover:text-gray-600 text-xl">←</Link>
-        <h1 className="text-2xl font-bold text-gray-900">{client.name}</h1>
+      <div className="flex items-center gap-3 mb-8">
+        <Link href="/clients" className="text-gray-400 hover:text-gray-600">←</Link>
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-6 bg-emerald-600 rounded-none shrink-0" />
+          <h1 className="text-xl font-bold text-gray-900">{client.name}</h1>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-2 text-sm">
-          <h2 className="font-semibold text-gray-700 mb-1">連絡先情報</h2>
-          <p><span className="text-gray-400">メール:</span>{' '}
+      {/* Client info + stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-8 mb-8 border-b border-gray-100">
+        <div className="space-y-2 text-sm sm:col-span-1">
+          <p className="font-medium text-gray-500 text-xs uppercase tracking-wide mb-3">連絡先情報</p>
+          <p>
+            <span className="text-gray-400">メール: </span>
             <a href={`mailto:${client.email}`} className="text-emerald-600">{client.email}</a>
           </p>
-          {client.phone && <p><span className="text-gray-400">電話:</span> {client.phone}</p>}
-          {client.address && <p><span className="text-gray-400">住所:</span> {client.address}</p>}
-          <p><span className="text-gray-400">登録日:</span> {formatDate(client.createdAt)}</p>
+          {client.phone && <p><span className="text-gray-400">電話: </span>{client.phone}</p>}
+          {client.address && <p><span className="text-gray-400">住所: </span>{client.address}</p>}
+          <p><span className="text-gray-400">登録日: </span>{formatDate(client.createdAt)}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <p className="text-sm text-gray-500">合計請求額</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(totalInvoiced)}</p>
+        <div>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">合計請求額</p>
+          <p className="text-2xl font-bold text-gray-900">{formatCurrency(totalInvoiced)}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <p className="text-sm text-gray-500">入金済み合計</p>
-          <p className="text-2xl font-bold text-emerald-600 mt-1">{formatCurrency(totalPaid)}</p>
+        <div>
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">入金済み合計</p>
+          <p className="text-2xl font-bold text-emerald-600">{formatCurrency(totalPaid)}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between p-5 border-b border-gray-100">
+      <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
+        {/* Quotes */}
+        <div className="pb-8 lg:pb-0 lg:pr-8">
+          <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-900">見積書 ({client.quotes.length}件)</h2>
             <Link href={`/quotes/new?clientId=${client.id}`} className="text-sm text-emerald-600 hover:text-emerald-700">+ 新規</Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-gray-100">
             {client.quotes.map((q) => (
-              <Link key={q.id} href={`/quotes/${q.id}`} className="flex items-center justify-between p-4 hover:bg-gray-50">
-                <div>
+              <Link key={q.id} href={`/quotes/${q.id}`} className="flex items-center justify-between py-3 hover:bg-emerald-50/30 -mx-2 px-2 transition-colors">
+                <div className="min-w-0 pr-3">
                   <p className="text-sm font-medium text-gray-900">{q.quoteNumber}</p>
-                  <p className="text-xs text-gray-500">{q.title}</p>
+                  <p className="text-xs text-gray-500 truncate">{q.title}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <p className="text-sm font-semibold">{formatCurrency(q.total)}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-sm ${QUOTE_STATUS_COLORS[q.status]}`}>
+                  <span className={`text-xs px-1.5 py-0.5 rounded-sm ${QUOTE_STATUS_COLORS[q.status]}`}>
                     {QUOTE_STATUS_LABELS[q.status]}
                   </span>
                 </div>
               </Link>
             ))}
-            {client.quotes.length === 0 && <p className="text-sm text-gray-400 text-center py-6">見積書なし</p>}
+            {client.quotes.length === 0 && <p className="text-sm text-gray-400 py-6">見積書なし</p>}
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between p-5 border-b border-gray-100">
+        {/* Invoices */}
+        <div className="pt-8 lg:pt-0 lg:pl-8">
+          <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-900">請求書 ({client.invoices.length}件)</h2>
             <Link href={`/invoices/new?clientId=${client.id}`} className="text-sm text-emerald-600 hover:text-emerald-700">+ 新規</Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-gray-100">
             {client.invoices.map((inv) => (
-              <Link key={inv.id} href={`/invoices/${inv.id}`} className="flex items-center justify-between p-4 hover:bg-gray-50">
-                <div>
+              <Link key={inv.id} href={`/invoices/${inv.id}`} className="flex items-center justify-between py-3 hover:bg-emerald-50/30 -mx-2 px-2 transition-colors">
+                <div className="min-w-0 pr-3">
                   <p className="text-sm font-medium text-gray-900">{inv.invoiceNumber}</p>
                   <p className="text-xs text-gray-500">期限: {formatDate(inv.dueDate)}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <p className="text-sm font-semibold">{formatCurrency(inv.total)}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-sm ${INVOICE_STATUS_COLORS[inv.status]}`}>
+                  <span className={`text-xs px-1.5 py-0.5 rounded-sm ${INVOICE_STATUS_COLORS[inv.status]}`}>
                     {INVOICE_STATUS_LABELS[inv.status]}
                   </span>
                 </div>
               </Link>
             ))}
-            {client.invoices.length === 0 && <p className="text-sm text-gray-400 text-center py-6">請求書なし</p>}
+            {client.invoices.length === 0 && <p className="text-sm text-gray-400 py-6">請求書なし</p>}
           </div>
         </div>
       </div>
