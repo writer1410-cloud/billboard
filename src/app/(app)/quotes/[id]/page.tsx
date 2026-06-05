@@ -27,7 +27,7 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-900">{quote.quoteNumber}</h1>
-            <span className={`text-sm px-2 py-1 rounded-full ${QUOTE_STATUS_COLORS[quote.status]}`}>
+            <span className={`text-sm px-2 py-1 rounded-sm ${QUOTE_STATUS_COLORS[quote.status]}`}>
               {QUOTE_STATUS_LABELS[quote.status]}
             </span>
           </div>
@@ -88,9 +88,9 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {quote.invoice && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-sm">
-          <span className="text-green-700">請求書が発行されました: </span>
-          <Link href={`/invoices/${quote.invoice.id}`} className="font-medium text-green-700 hover:underline">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-sm">
+          <span className="text-emerald-700">請求書が発行されました: </span>
+          <Link href={`/invoices/${quote.invoice.id}`} className="font-medium text-emerald-700 hover:underline">
             {quote.invoice.invoiceNumber}
           </Link>
         </div>

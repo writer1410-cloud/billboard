@@ -13,7 +13,7 @@ export default async function QuotesPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">見積書</h1>
         <Link href="/quotes/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+          className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">
           + 新規見積書
         </Link>
       </div>
@@ -36,7 +36,7 @@ export default async function QuotesPage() {
               <tr key={q.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-3">
                   <Link href={`/quotes/${q.id}`}
-                    className="font-medium text-blue-600 hover:text-blue-700 text-sm">{q.quoteNumber}</Link>
+                    className="font-medium text-emerald-600 hover:text-emerald-700 text-sm">{q.quoteNumber}</Link>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">{q.client.name}</td>
                 <td className="px-4 py-3 text-sm text-gray-700">{q.title}</td>

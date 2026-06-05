@@ -28,7 +28,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-900">{invoice.invoiceNumber}</h1>
-            <span className={`text-sm px-2 py-1 rounded-full ${INVOICE_STATUS_COLORS[invoice.status]}`}>
+            <span className={`text-sm px-2 py-1 rounded-sm ${INVOICE_STATUS_COLORS[invoice.status]}`}>
               {INVOICE_STATUS_LABELS[invoice.status]}
             </span>
           </div>
@@ -42,7 +42,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           <div><span className="text-gray-400">クライアント</span><p className="font-medium mt-0.5">{invoice.client.name}</p></div>
           <div><span className="text-gray-400">発行日</span><p className="font-medium mt-0.5">{formatDate(invoice.issueDate)}</p></div>
           <div><span className="text-gray-400">支払期限</span><p className={`font-medium mt-0.5 ${invoice.status === 'OVERDUE' ? 'text-red-600' : ''}`}>{formatDate(invoice.dueDate)}</p></div>
-          <div><span className="text-gray-400">入金日</span><p className="font-medium mt-0.5 text-green-600">{invoice.paidAt ? formatDate(invoice.paidAt) : '-'}</p></div>
+          <div><span className="text-gray-400">入金日</span><p className="font-medium mt-0.5 text-emerald-600">{invoice.paidAt ? formatDate(invoice.paidAt) : '-'}</p></div>
         </div>
 
         <table className="w-full mb-4">
@@ -100,7 +100,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
       {invoice.quote && (
         <div className="mt-4 text-sm text-gray-500">
-          見積書: <Link href={`/quotes/${invoice.quote.id}`} className="text-blue-600 hover:underline">{invoice.quote.quoteNumber}</Link>
+          見積書: <Link href={`/quotes/${invoice.quote.id}`} className="text-emerald-600 hover:underline">{invoice.quote.quoteNumber}</Link>
         </div>
       )}
     </div>

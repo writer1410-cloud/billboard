@@ -29,7 +29,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-2 text-sm">
           <h2 className="font-semibold text-gray-700 mb-1">連絡先情報</h2>
           <p><span className="text-gray-400">メール:</span>{' '}
-            <a href={`mailto:${client.email}`} className="text-blue-600">{client.email}</a>
+            <a href={`mailto:${client.email}`} className="text-emerald-600">{client.email}</a>
           </p>
           {client.phone && <p><span className="text-gray-400">電話:</span> {client.phone}</p>}
           {client.address && <p><span className="text-gray-400">住所:</span> {client.address}</p>}
@@ -41,7 +41,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <p className="text-sm text-gray-500">入金済み合計</p>
-          <p className="text-2xl font-bold text-green-600 mt-1">{formatCurrency(totalPaid)}</p>
+          <p className="text-2xl font-bold text-emerald-600 mt-1">{formatCurrency(totalPaid)}</p>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         <div className="bg-white rounded-xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between p-5 border-b border-gray-100">
             <h2 className="font-semibold text-gray-900">見積書 ({client.quotes.length}件)</h2>
-            <Link href={`/quotes/new?clientId=${client.id}`} className="text-sm text-blue-600 hover:text-blue-700">+ 新規</Link>
+            <Link href={`/quotes/new?clientId=${client.id}`} className="text-sm text-emerald-600 hover:text-emerald-700">+ 新規</Link>
           </div>
           <div className="divide-y divide-gray-50">
             {client.quotes.map((q) => (
@@ -60,7 +60,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold">{formatCurrency(q.total)}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${QUOTE_STATUS_COLORS[q.status]}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-sm ${QUOTE_STATUS_COLORS[q.status]}`}>
                     {QUOTE_STATUS_LABELS[q.status]}
                   </span>
                 </div>
@@ -73,7 +73,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
         <div className="bg-white rounded-xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between p-5 border-b border-gray-100">
             <h2 className="font-semibold text-gray-900">請求書 ({client.invoices.length}件)</h2>
-            <Link href={`/invoices/new?clientId=${client.id}`} className="text-sm text-blue-600 hover:text-blue-700">+ 新規</Link>
+            <Link href={`/invoices/new?clientId=${client.id}`} className="text-sm text-emerald-600 hover:text-emerald-700">+ 新規</Link>
           </div>
           <div className="divide-y divide-gray-50">
             {client.invoices.map((inv) => (
@@ -84,7 +84,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold">{formatCurrency(inv.total)}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${INVOICE_STATUS_COLORS[inv.status]}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-sm ${INVOICE_STATUS_COLORS[inv.status]}`}>
                     {INVOICE_STATUS_LABELS[inv.status]}
                   </span>
                 </div>

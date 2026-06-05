@@ -43,18 +43,18 @@ export default function InvoiceActions({ invoice }: { invoice: Invoice }) {
         <>
           {!invoice.status.includes('SENT') && (
             <button onClick={() => action('send')} disabled={loading === 'send'}
-              className="px-3 py-1.5 border border-blue-200 text-blue-600 rounded-lg text-sm hover:bg-blue-50 disabled:opacity-50 transition-colors">
+              className="px-3 py-1.5 border border-emerald-200 text-emerald-600 rounded-lg text-sm hover:bg-emerald-50 disabled:opacity-50 transition-colors">
               {loading === 'send' ? '送中...' : '✉ メール送付'}
             </button>
           )}
           {(invoice.status === 'UNPAID' || invoice.status === 'OVERDUE') && (
             <>
               <button onClick={() => action('remind')} disabled={loading === 'remind'}
-                className="px-3 py-1.5 border border-orange-200 text-orange-600 rounded-lg text-sm hover:bg-orange-50 disabled:opacity-50 transition-colors">
+                className="px-3 py-1.5 border border-amber-200 text-amber-600 rounded-lg text-sm hover:bg-amber-50 disabled:opacity-50 transition-colors">
                 {loading === 'remind' ? '送中...' : '🔔 リマインド'}
               </button>
               <button onClick={() => action('pay')} disabled={loading === 'pay'}
-                className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 disabled:opacity-50 transition-colors">
+                className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700 disabled:opacity-50 transition-colors">
                 {loading === 'pay' ? '処理中...' : '✓ 入金確認'}
               </button>
             </>

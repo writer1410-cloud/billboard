@@ -13,7 +13,7 @@ export default async function ClientsPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">クライアント</h1>
         <Link href="/clients/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+          className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">
           + 新規クライアント
         </Link>
       </div>
@@ -36,7 +36,7 @@ export default async function ClientsPage() {
               <tr key={client.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-3">
                   <Link href={`/clients/${client.id}`}
-                    className="font-medium text-gray-900 hover:text-blue-600 text-sm">
+                    className="font-medium text-gray-900 hover:text-emerald-600 text-sm">
                     {client.name}
                   </Link>
                 </td>
@@ -53,7 +53,7 @@ export default async function ClientsPage() {
         {clients.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-400">クライアントがいません</p>
-            <Link href="/clients/new" className="text-blue-600 text-sm hover:underline mt-2 inline-block">
+            <Link href="/clients/new" className="text-emerald-600 text-sm hover:underline mt-2 inline-block">
               最初のクライアントを追加
             </Link>
           </div>

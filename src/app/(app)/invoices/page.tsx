@@ -22,7 +22,7 @@ export default async function InvoicesPage({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">請求書</h1>
         <Link href="/invoices/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+          className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">
           + 新規請求書
         </Link>
       </div>
@@ -32,8 +32,8 @@ export default async function InvoicesPage({
           <Link key={s} href={s ? `/invoices?status=${s}` : '/invoices'}
             className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
               (status ?? '') === s
-                ? 'bg-blue-600 text-white'
-                : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-white border border-gray-200 text-gray-600 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700'
             }`}>
             {statusLabels[s]}
           </Link>
@@ -58,7 +58,7 @@ export default async function InvoicesPage({
               <tr key={inv.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-3">
                   <Link href={`/invoices/${inv.id}`}
-                    className="font-medium text-blue-600 hover:text-blue-700 text-sm">{inv.invoiceNumber}</Link>
+                    className="font-medium text-emerald-600 hover:text-emerald-700 text-sm">{inv.invoiceNumber}</Link>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">{inv.client.name}</td>
                 <td className="px-4 py-3 text-sm text-gray-700">{inv.title}</td>
