@@ -42,7 +42,7 @@ export default async function Dashboard() {
           { label: '延滞請求書', value: `${overdueCount}件`, color: 'text-red-600' },
           { label: '今月の入金', value: formatCurrency(paidAgg._sum.total ?? 0), color: 'text-green-600' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div key={stat.label} className="bg-white rounded-xl p-3 sm:p-5 shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500">{stat.label}</p>
             <p className={`text-2xl font-bold mt-1 ${stat.color}`}>{stat.value}</p>
           </div>
