@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 const schema = z.object({
   name: z.string().min(1),
@@ -20,5 +21,6 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: '入力内容が不正です' }, { status: 400 });
 
   const client = await prisma.client.create({ data: parsed.data });
+  revalidatePath('/clients');
   return NextResponse.json(client, { status: 201 });
 }

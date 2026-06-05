@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 const itemSchema = z.object({
   description: z.string().min(1),
@@ -46,5 +47,7 @@ export async function POST(req: Request) {
     },
     include: { items: true },
   });
+  revalidatePath('/quotes');
+  revalidatePath('/');
   return NextResponse.json(quote, { status: 201 });
 }

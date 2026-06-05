@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendInvoiceEmail } from '@/lib/email';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -25,5 +26,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
     where: { id },
     data: { sentAt: new Date() },
   });
+  revalidatePath('/invoices');
+  revalidatePath(`/invoices/${id}`);
   return NextResponse.json(updated);
 }

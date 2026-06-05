@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendReminderEmail } from '@/lib/email';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -31,5 +32,8 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
     prisma.reminder.create({ data: { invoiceId: id, type: 'OVERDUE' } }),
   ]);
 
+  revalidatePath('/');
+  revalidatePath('/invoices');
+  revalidatePath(`/invoices/${id}`);
   return NextResponse.json(updated);
 }
