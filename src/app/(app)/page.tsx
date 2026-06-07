@@ -5,6 +5,8 @@ import {
   QUOTE_STATUS_COLORS, QUOTE_STATUS_LABELS,
 } from '@/lib/utils';
 import Link from 'next/link';
+import RevenueChart from '@/components/RevenueChart';
+import InvoiceStatusChart from '@/components/InvoiceStatusChart';
 
 function GridIcon() {
   return (
@@ -60,33 +62,72 @@ function ListIcon() {
   );
 }
 
+const STATUS_COLORS_HEX: Record<string, string> = {
+  PAID:      '#0891b2',
+  UNPAID:    '#f59e0b',
+  OVERDUE:   '#ef4444',
+  CANCELLED: '#d1d5db',
+};
+
 export default async function Dashboard() {
   const now = new Date();
   const dateStr = new Intl.DateTimeFormat('ja-JP', {
     year: 'numeric', month: 'long', day: 'numeric', weekday: 'long',
   }).format(now);
 
-  const [clientCount, recentQuotes, recentInvoices, unpaidAgg, overdueCount, paidAgg] =
-    await Promise.all([
-      prisma.client.count(),
-      prisma.quote.findMany({
-        take: 5, orderBy: { createdAt: 'desc' }, include: { client: true },
-      }),
-      prisma.invoice.findMany({
-        take: 5, orderBy: { createdAt: 'desc' }, include: { client: true },
-      }),
-      prisma.invoice.aggregate({
-        where: { status: { in: ['UNPAID', 'OVERDUE'] } }, _sum: { total: true },
-      }),
-      prisma.invoice.count({ where: { status: 'OVERDUE' } }),
-      prisma.invoice.aggregate({
-        where: {
-          status: 'PAID',
-          paidAt: { gte: new Date(now.getFullYear(), now.getMonth(), 1) },
-        },
-        _sum: { total: true },
-      }),
-    ]);
+  // Build 6-month window
+  const months: { key: string; label: string; start: Date; end: Date }[] = [];
+  for (let i = 5; i >= 0; i--) {
+    const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const end   = new Date(now.getFullYear(), now.getMonth() - i + 1, 0, 23, 59, 59);
+    const label = new Intl.DateTimeFormat('ja-JP', { month: 'short' }).format(start);
+    months.push({ key: `${start.getFullYear()}-${start.getMonth()}`, label, start, end });
+  }
+
+  const [
+    clientCount, recentQuotes, recentInvoices,
+    unpaidAgg, overdueCount, paidAgg,
+    paidInvoices6m, statusGroups,
+  ] = await Promise.all([
+    prisma.client.count(),
+    prisma.quote.findMany({ take: 5, orderBy: { createdAt: 'desc' }, include: { client: true } }),
+    prisma.invoice.findMany({ take: 5, orderBy: { createdAt: 'desc' }, include: { client: true } }),
+    prisma.invoice.aggregate({ where: { status: { in: ['UNPAID', 'OVERDUE'] } }, _sum: { total: true } }),
+    prisma.invoice.count({ where: { status: 'OVERDUE' } }),
+    prisma.invoice.aggregate({
+      where: { status: 'PAID', paidAt: { gte: new Date(now.getFullYear(), now.getMonth(), 1) } },
+      _sum: { total: true },
+    }),
+    prisma.invoice.findMany({
+      where: { status: 'PAID', paidAt: { gte: months[0].start } },
+      select: { paidAt: true, total: true },
+    }),
+    prisma.invoice.groupBy({
+      by: ['status'],
+      _count: { id: true },
+      _sum: { total: true },
+    }),
+  ]);
+
+  // Monthly revenue data
+  const revenueData = months.map(({ key, label, start, end }) => {
+    const revenue = paidInvoices6m
+      .filter((inv) => inv.paidAt && inv.paidAt >= start && inv.paidAt <= end)
+      .reduce((s, inv) => s + inv.total, 0);
+    return { month: label, revenue, key };
+  });
+
+  // Status distribution data
+  const statusData = (['PAID', 'UNPAID', 'OVERDUE', 'CANCELLED'] as const).map((status) => {
+    const group = statusGroups.find((g) => g.status === status);
+    return {
+      status,
+      label: INVOICE_STATUS_LABELS[status],
+      count: group?._count.id ?? 0,
+      total: group?._sum.total ?? 0,
+      color: STATUS_COLORS_HEX[status],
+    };
+  }).filter((d) => d.count > 0);
 
   const stats = [
     { label: 'クライアント数', value: `${clientCount}社` },
@@ -137,6 +178,27 @@ export default async function Dashboard() {
               </Link>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* ─── Charts ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Revenue bar chart */}
+        <div className="lg:col-span-2 bg-white rounded-sm border border-gray-200 px-5 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-sm text-gray-900">月次入金推移</h2>
+            <span className="text-xs text-gray-400">過去6ヶ月</span>
+          </div>
+          <RevenueChart data={revenueData} />
+        </div>
+
+        {/* Invoice status donut */}
+        <div className="bg-white rounded-sm border border-gray-200 px-5 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-sm text-gray-900">請求書ステータス</h2>
+            <span className="text-xs text-gray-400">全期間</span>
+          </div>
+          <InvoiceStatusChart data={statusData} />
         </div>
       </div>
 
