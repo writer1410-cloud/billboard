@@ -35,46 +35,51 @@ export default function InvoiceStatusChart({ data }: Props) {
   return (
     <div className="w-full h-48">
       {hasData ? (
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="count"
-              cx="40%"
-              cy="50%"
-              innerRadius={50}
-              outerRadius={72}
-              paddingAngle={2}
-              startAngle={90}
-              endAngle={-270}
-            >
-              {data.map((entry) => (
-                <Cell key={entry.status} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-            <Legend
-              layout="vertical"
-              align="right"
-              verticalAlign="middle"
-              iconType="circle"
-              iconSize={8}
-              formatter={(_, entry) => {
-                const d = (entry as { payload: StatusData }).payload;
-                return (
-                  <span className="text-xs text-gray-600">
-                    {d.label} <span className="font-medium text-gray-900">{d.count}</span>
-                  </span>
-                );
-              }}
-            />
-            {/* Center label */}
-            <text x="40%" y="50%" textAnchor="middle" dominantBaseline="middle">
-              <tspan x="40%" dy="-6" fontSize="20" fontWeight="700" fill="#111827">{total}</tspan>
-              <tspan x="40%" dy="16" fontSize="11" fill="#9ca3af">件合計</tspan>
-            </text>
-          </PieChart>
-        </ResponsiveContainer>
+        <div className="relative w-full h-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                dataKey="count"
+                cx="40%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={72}
+                paddingAngle={2}
+                startAngle={90}
+                endAngle={-270}
+              >
+                {data.map((entry) => (
+                  <Cell key={entry.status} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomTooltip />} />
+              <Legend
+                layout="vertical"
+                align="right"
+                verticalAlign="middle"
+                iconType="circle"
+                iconSize={8}
+                formatter={(_, entry) => {
+                  const d = (entry as { payload: StatusData }).payload;
+                  return (
+                    <span className="text-xs text-gray-600">
+                      {d.label} <span className="font-medium text-gray-900">{d.count}</span>
+                    </span>
+                  );
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+          {/* Center label — absolutely positioned to stay centered in the donut */}
+          <div
+            className="absolute pointer-events-none text-center"
+            style={{ top: '50%', left: '40%', transform: 'translate(-50%, -50%)' }}
+          >
+            <p className="text-xl font-bold text-gray-900 leading-none">{total}</p>
+            <p className="text-[11px] text-gray-400 mt-1">件合計</p>
+          </div>
+        </div>
       ) : (
         <div className="h-full flex items-center justify-center text-sm text-gray-400">
           データがありません
